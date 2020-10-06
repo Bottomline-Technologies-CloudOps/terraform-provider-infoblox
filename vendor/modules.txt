@@ -57,7 +57,7 @@ github.com/bgentry/speakeasy
 github.com/blang/semver
 # github.com/davecgh/go-spew v1.1.1
 github.com/davecgh/go-spew/spew
-# github.com/fanatic/go-infoblox v0.0.0-20180414184906-ece4e23a370d
+# github.com/fanatic/go-infoblox v0.0.0-20190327001820-0d3bad0f0a94
 github.com/fanatic/go-infoblox
 # github.com/fatih/color v1.7.0
 github.com/fatih/color
