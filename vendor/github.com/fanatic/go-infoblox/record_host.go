@@ -1,7 +1,6 @@
 package infoblox
 
 import "fmt"
-import "encoding/json"
 
 // RecordHost returns the HOST record resource
 // https://192.168.2.200/wapidoc/objects/record.host.html
@@ -27,7 +26,7 @@ type RecordHostObject struct {
 // HostIpv4Addr is an ipv4 address for a HOST record
 type HostIpv4Addr struct {
 	Object           `json:"-"`
-	ConfigureForDHCP bool   `json:"configure_for_dhcp"`
+	ConfigureForDHCP bool   `json:"configure_for_dhcp,omitempty"`
 	Host             string `json:"host,omitempty"`
 	Ipv4Addr         string `json:"ipv4addr,omitempty"`
 	MAC              string `json:"mac,omitempty"`
@@ -36,7 +35,7 @@ type HostIpv4Addr struct {
 // HostIpv6Addr is an ipv6 address for a HOST record
 type HostIpv6Addr struct {
 	Object           `json:"-"`
-	ConfigureForDHCP bool   `json:"configure_for_dhcp"`
+	ConfigureForDHCP bool   `json:"configure_for_dhcp,omitempty"`
 	Host             string `json:"host,omitempty"`
 	Ipv6Addr         string `json:"ipv6addr,omitempty"`
 	MAC              string `json:"mac,omitempty"`
@@ -67,21 +66,11 @@ func (c *Client) GetRecordHost(ref string, opts *Options) (*RecordHostObject, er
 	return &out, nil
 }
 
-func (c *Client) FindRecordHost(name string, view string) ([]RecordHostObject, error) {
-	// FindRecordHost searches the Infoblox WAPI for the HOST record with the given
+// FindRecordHost searches the Infoblox WAPI for the HOST record with the given
+// name
+func (c *Client) FindRecordHost(name string) ([]RecordHostObject, error) {
 	field := "name"
-	viewName := "view"
-	// conditions := []Condition{Condition{Field: &field, Value: name}}
-	conditions := []Condition{
-		Condition{
-			Field: &field,
-			Value: name,
-		},
-		Condition{
-			Field: &viewName,
-			Value: view,
-		},
-	}
+	conditions := []Condition{Condition{Field: &field, Value: name}}
 	resp, err := c.RecordHost().find(conditions, nil)
 	if err != nil {
 		return nil, err
@@ -93,13 +82,4 @@ func (c *Client) FindRecordHost(name string, view string) ([]RecordHostObject, e
 		return nil, err
 	}
 	return out, nil
-}
-
-func (c *Client) CreateRecordHost(recordHostObject RecordHostObject) (string, error) {
-	d, _ := json.Marshal(recordHostObject)
-	resp, err := c.RecordHost().CreateJson("record:host", nil, d)
-	if err != nil {
-		return "", err
-	}
-	return resp, nil
 }
