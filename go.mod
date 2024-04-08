@@ -1,6 +1,6 @@
 module github.com/prudhvitella/terraform-provider-infoblox
 
-go 1.12
+go 1.21
 
 require (
 	github.com/fanatic/go-infoblox v0.0.0-20190327001820-0d3bad0f0a94
